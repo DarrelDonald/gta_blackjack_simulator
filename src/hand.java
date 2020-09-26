@@ -1,8 +1,20 @@
-public class dealer_hand extends hand{
-    private card[] cards = new card[12]; // maximum of 12 cards are possible without 17 or higher
-    private boolean soft = false;
-    private int cursor = 0;
+public class hand {
+    private card[] cards = new card[7]; // drawing 7 cards without bust is automatic win
+    private int cursor = 0; // track cards in hand
 
+    hand(){}
+
+    public void hit(card card){ // add new card to hand
+        cards[cursor++] = card;
+    }
+
+    public card[] get_hand(){
+        return cards;
+    }
+
+    public card last_card(){
+        return cards[cursor - 1];
+    }
 
     public int score(){
         int value = 0;
@@ -24,25 +36,13 @@ public class dealer_hand extends hand{
         }
 
         if(aces > 0 && value + 10 <= 21){
-            soft = true;
             value = value + 10;
-        }
-        else{
-            soft = false;
         }
 
         return value;
     }
 
-    public boolean stop(){
-        return score() >= 17;
-    }
-
-    public void hit(card card){ // add new card to hand
-        cards[cursor++] = card;
-    }
-
-    public card last_card(){
-        return cards[cursor - 1];
+    public boolean bust(){
+        return score() > 21;
     }
 }
